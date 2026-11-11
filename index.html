@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrossBorder Solo — Global Freelancer Invoicing & Export Tax Engine</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Studio Header -->
+  <header>
+    <div class="brand">
+      <span class="brand-icon">💼</span>
+      <div class="brand-title">
+        <h1>CrossBorder Solo <span class="badge">GST LUT Ready</span></h1>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btnLoadSample" class="btn-header btn-sample">💡 Load Sample</button>
+      <button id="btnNudge" class="btn-header btn-nudge">💬 Polite Nudge</button>
+      <button id="btnVip" class="btn-header btn-vip">⭐️ Lifetime VIP ($5)</button>
+      <button id="btnPrintPdf" class="btn-header btn-print">🖨️ Print / Save PDF</button>
+    </div>
+  </header>
+
+  <!-- Split-Screen Workspace -->
+  <div class="workspace">
+    <!-- Left Panel: Live Form Editor -->
+    <div class="editor-panel">
+      <!-- Invoice Meta -->
+      <div class="form-section">
+        <div class="section-label">📄 Invoice Details</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpInvNumber">Invoice Number</label>
+            <input type="text" id="inpInvNumber">
+          </div>
+          <div class="form-group">
+            <label for="inpCurrency">Billing Currency</label>
+            <select id="inpCurrency">
+              <option value="USD">USD ($) — US Dollar</option>
+              <option value="EUR">EUR (€) — Euro</option>
+              <option value="GBP">GBP (£) — British Pound</option>
+              <option value="AUD">AUD (A$) — Australian Dollar</option>
+              <option value="CAD">CAD (C$) — Canadian Dollar</option>
+              <option value="AED">AED — UAE Dirham</option>
+              <option value="SGD">SGD (S$) — Singapore Dollar</option>
+              <option value="INR">INR (₹) — Indian Rupee</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpInvDate">Issue Date</label>
+            <input type="date" id="inpInvDate">
+          </div>
+          <div class="form-group">
+            <label for="inpDueDate">Due Date</label>
+            <input type="date" id="inpDueDate">
+          </div>
+        </div>
+      </div>
+
+      <!-- Sender Details (Freelancer / Consultant) -->
+      <div class="form-section">
+        <div class="section-label">👤 Your Business / Profile (Bill From)</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpSenderName">Full Name / Trade Name</label>
+            <input type="text" id="inpSenderName">
+          </div>
+          <div class="form-group">
+            <label for="inpSenderTitle">Professional Title</label>
+            <input type="text" id="inpSenderTitle">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inpSenderAddress">Your Address</label>
+          <textarea id="inpSenderAddress" rows="2"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpSenderEmail">Email Address</label>
+            <input type="email" id="inpSenderEmail">
+          </div>
+          <div class="form-group">
+            <label for="inpSenderGstin">GSTIN (Optional)</label>
+            <input type="text" id="inpSenderGstin">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inpSenderPan">PAN Number</label>
+          <input type="text" id="inpSenderPan">
+        </div>
+      </div>
+
+      <!-- Client Details (Overseas) -->
+      <div class="form-section">
+        <div class="section-label">🏢 Overseas Client (Bill To)</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpClientCompany">Client Company Name</label>
+            <input type="text" id="inpClientCompany">
+          </div>
+          <div class="form-group">
+            <label for="inpClientContact">Contact Person / Dept</label>
+            <input type="text" id="inpClientContact">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inpClientAddress">Client Global Address</label>
+          <textarea id="inpClientAddress" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="inpClientEmail">Client Billing Email</label>
+          <input type="email" id="inpClientEmail">
+        </div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="form-section">
+        <div class="section-label">📋 Services & Deliverables</div>
+        <div class="line-items-header">
+          <span>Description</span>
+          <span>Qty / Hrs</span>
+          <span>Rate</span>
+          <span></span>
+        </div>
+        <div id="editorItemsContainer"></div>
+        <button id="btnAddLineItem" class="btn-add-item">+ Add Line Item</button>
+      </div>
+
+      <!-- GST LUT Export Compliance -->
+      <div class="form-section">
+        <div class="section-label">⚖️ Indian Export GST & LUT Compliance</div>
+        <div class="compliance-box">
+          <label class="toggle-switch">
+            <input type="checkbox" id="inpLutToggle" checked>
+            <span>Enable 0% Export GST (Under Letter of Undertaking - LUT)</span>
+          </label>
+          <p style="font-size: 0.72rem; color: #cbd5e1; margin-top: 0.35rem;">
+            Automatically prints the mandatory statutory legal declaration on the invoice to satisfy GST audits and zero-rated export rules.
+          </p>
+          <div style="margin-top: 0.5rem;">
+            <label for="inpLutArn" style="font-size: 0.7rem; color: #fde68a;">LUT Acknowledgement Reference Number (ARN):</label>
+            <input type="text" id="inpLutArn" placeholder="e.g. AD190426001234F">
+          </div>
+        </div>
+      </div>
+
+      <!-- Banking & Wire Details -->
+      <div class="form-section">
+        <div class="section-label">🏦 International Wire & Payment Info</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpBankName">Bank Name</label>
+            <input type="text" id="inpBankName">
+          </div>
+          <div class="form-group">
+            <label for="inpAccountNum">Account Number / IBAN</label>
+            <input type="text" id="inpAccountNum">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpIfsc">IFSC Code</label>
+            <input type="text" id="inpIfsc">
+          </div>
+          <div class="form-group">
+            <label for="inpSwift">SWIFT / BIC Code</label>
+            <input type="text" id="inpSwift">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inpWiseTag">Wise Tag / PayPal ID</label>
+          <input type="text" id="inpWiseTag" placeholder="e.g. ayan-ghosh-75">
+        </div>
+        <div class="form-group">
+          <label for="inpNotes">Notes & Terms</label>
+          <textarea id="inpNotes" rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Live A4 Paper Invoice Preview -->
+    <div class="preview-panel">
+      <div class="a4-page" id="invoicePaper">
+        <div>
+          <!-- Top Header -->
+          <div class="inv-header">
+            <div class="inv-brand">
+              <h2 id="prevSenderName">Ayan Kumar Ghosh</h2>
+              <p id="prevSenderTitle">Senior Full-Stack AI Engineer & Consultant</p>
+              <p id="prevSenderAddress" style="white-space: pre-line;">Kolkata, West Bengal, India</p>
+              <p id="prevSenderEmail">ayanghosh75@gmail.com</p>
+              <p id="prevSenderTaxId" style="font-weight: 600; color: #0f172a; margin-top: 4px;"></p>
+            </div>
+
+            <div class="inv-meta">
+              <div class="inv-title">INVOICE</div>
+              <table>
+                <tr>
+                  <td>Invoice #:</td>
+                  <td id="prevInvNumber">INV-2026-0042</td>
+                </tr>
+                <tr>
+                  <td>Date:</td>
+                  <td id="prevInvDate">2026-11-11</td>
+                </tr>
+                <tr>
+                  <td>Due Date:</td>
+                  <td id="prevDueDate">2026-11-25</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Addresses Block -->
+          <div class="inv-addresses">
+            <div class="address-block">
+              <h4>BILLED TO (OVERSEAS CLIENT)</h4>
+              <p><strong id="prevClientCompany">Apex Digital Solutions Inc.</strong></p>
+              <p id="prevClientContact">Attn: Sarah Jenkins</p>
+              <p id="prevClientAddress" style="white-space: pre-line;">548 Market St, Suite 39201, San Francisco, CA, USA</p>
+              <p id="prevClientEmail">billing@apexdigital.io</p>
+            </div>
+          </div>
+
+          <!-- Table of Items -->
+          <table class="inv-table">
+            <thead>
+              <tr>
+                <th style="width: 55%;">Description</th>
+                <th class="text-right" style="width: 15%;">Qty / Hrs</th>
+                <th class="text-right" style="width: 15%;">Unit Price</th>
+                <th class="text-right" style="width: 15%;">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="prevItemsBody"></tbody>
+          </table>
+
+          <!-- Totals -->
+          <div class="inv-totals-wrap">
+            <div class="inv-totals">
+              <div class="row">
+                <span>Subtotal:</span>
+                <span id="prevSubtotal">$0.00</span>
+              </div>
+              <div class="row">
+                <span>Tax (GST 0% under LUT):</span>
+                <span>$0.00</span>
+              </div>
+              <div class="row grand-total">
+                <span>Total Due:</span>
+                <span id="prevGrandTotal">$0.00 USD</span>
+              </div>
+              <div id="prevDualCurrencyNote" class="dual-currency-note"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer / Statutory Details -->
+        <div class="inv-footer-details">
+          <!-- GST LUT Statutory Box -->
+          <div id="prevLutNotice" class="gst-lut-box"></div>
+
+          <!-- Wire Instructions -->
+          <div class="payment-details-grid">
+            <div class="payment-col">
+              <h5>Direct Bank Wire Instructions</h5>
+              <p><strong>Bank:</strong> <span id="prevBankName">SBI</span></p>
+              <p><strong>Account:</strong> <span id="prevAccountNum">38910482019</span></p>
+              <p><strong>IFSC:</strong> <span id="prevIfsc">SBIN0000123</span></p>
+              <p><strong>SWIFT/BIC:</strong> <span id="prevSwift">SBININBB123</span></p>
+            </div>
+            <div class="payment-col">
+              <h5>Alternative Payment Gateways</h5>
+              <p id="prevWiseWrap"><strong>Wise:</strong> <span id="prevWiseTag">ayan-ghosh-75</span></p>
+              <p><strong>Terms:</strong> <span id="prevNotes">Due within 14 days.</span></p>
+            </div>
+          </div>
+
+          <div class="signoff">
+            <p>Thank you for your business. This is a computer-generated tax invoice for export of services.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nudge Modal -->
+  <div id="nudgeModal" class="modal-overlay">
+    <div class="modal-card">
+      <button id="btnCloseNudge" class="close-btn">&times;</button>
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">
+        💬 Polite Payment Follow-Up Nudge
+      </h3>
+      <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 1rem;">
+        Foreign clients often overlook email attachments. Send this respectful, professional reminder via WhatsApp or Email:
+      </p>
+      <textarea id="nudgeText" rows="7" style="width: 100%; font-family: monospace; font-size: 0.8rem; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;"></textarea>
+      <button id="btnCopyNudge" style="width: 100%; background: #2563eb; color: #fff; font-weight: 700; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer;">
+        📋 Copy Reminder Text
+      </button>
+    </div>
+  </div>
+
+  <!-- VIP License Modal -->
+  <div id="vipModal" class="modal-overlay">
+    <div class="modal-card" style="max-height: 90vh; overflow-y: auto;">
+      <button id="btnCloseVip" class="close-btn">&times;</button>
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <span style="font-size: 2.2rem;">⭐️</span>
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-top: 0.35rem;">
+          CrossBorder Solo Lifetime VIP
+        </h3>
+        <p style="font-size: 0.8rem; color: #94a3b8;">
+          No $30/month subscription traps. Own the tool for life!
+        </p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.05); padding: 0.85rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.82rem; color: #cbd5e1;">
+        <div style="display: flex; justify-content: space-between; font-weight: 700; color: #fff; margin-bottom: 0.4rem;">
+          <span>One-Time Lifetime License:</span>
+          <span style="color: #f59e0b; font-size: 1.15rem;">₹১৯৯ / $৫.০০</span>
+        </div>
+        <p style="margin: 0.2rem 0;">• Unlimited export invoices with zero watermarks</p>
+        <p style="margin: 0.2rem 0;">• Automated 0% GST LUT export clause injection</p>
+        <p style="margin: 0.2rem 0;">• 100% private, client-side offline storage</p>
+      </div>
+
+      <!-- Payment Option 1: Direct Indian UPI / QR Code -->
+      <div style="background: #0f172a; border: 1.5px solid #d97706; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; text-align: center;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+          <span style="font-size: 1.2rem;">🇮🇳</span>
+          <h4 style="font-size: 0.95rem; font-weight: 800; color: #f59e0b; margin: 0;">১. ভারতীয় ইউপিআই পেমেন্ট (GPay / PhonePe / Paytm / BHIM)</h4>
+        </div>
+        <p style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 0.75rem;">
+          নিচের কিউআর কোড স্ক্যান করে অথবা সরাসরি UPI ID-তে <strong>₹১৯৯</strong> পাঠিয়ে লাইসেন্স সক্রিয় করুন:
+        </p>
+
+        <!-- Real Scannable Google Pay QR Code -->
+        <div style="display: inline-block; background: #fff; padding: 6px; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.5); margin-bottom: 0.75rem;">
+          <img src="ayan-googlepay-qr.jpg" alt="Ayan Kumar Ghosh Google Pay UPI QR" width="200" style="display: block; border-radius: 10px; max-width: 100%; height: auto;">
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; border: 1px solid #475569; padding: 0.5rem 0.75rem; border-radius: 8px; margin-bottom: 0.6rem;">
+          <div style="text-align: left;">
+            <div style="font-size: 0.68rem; color: #94a3b8;">Google Pay UPI ID:</div>
+            <div style="font-family: monospace; font-size: 0.88rem; font-weight: 800; color: #38bdf8;">ayanghosh75@oksbi</div>
+            <div style="font-size: 0.68rem; color: #64748b;">Payee: Ayan Kumar Ghosh</div>
+          </div>
+          <button id="btnCopyUpiSolo" type="button" style="background: #f59e0b; color: #000; border: none; font-size: 0.75rem; font-weight: 800; padding: 0.4rem 0.75rem; border-radius: 6px; cursor: pointer; transition: background 0.2s;">
+            📋 Copy UPI
+          </button>
+        </div>
+
+        <!-- Direct mobile tap to pay -->
+        <a href="upi://pay?pa=ayanghosh75@oksbi&pn=Ayan%20Kumar%20Ghosh&am=199&cu=INR&tn=CrossBorder%20Solo%20Lifetime" style="display: block; background: #2563eb; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 0.45rem; border-radius: 6px; text-decoration: none;">
+          📱 মোবাইলে সরাসরি Google Pay / UPI খুলুন
+        </a>
+      </div>
+
+      <!-- Payment Option 2: International / Card via Buy Me a Coffee -->
+      <div style="background: #0f172a; border: 1.5px solid #3b82f6; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; text-align: center;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+          <span style="font-size: 1.2rem;">🌍</span>
+          <h4 style="font-size: 0.95rem; font-weight: 800; color: #60a5fa; margin: 0;">২. International Card / PayPal / Buy Me a Coffee ($5.00)</h4>
+        </div>
+        <p style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 0.75rem;">
+          Instant credit/debit card, Apple Pay, Google Pay or PayPal worldwide:
+        </p>
+        <a href="https://www.buymeacoffee.com/AyanKumarGhosh" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; background: #FFDD00; color: #000; font-weight: 800; padding: 0.65rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(255, 221, 0, 0.3); box-sizing: border-box;">
+          <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy Me a Coffee" style="height: 20px;">
+          <span>Unlock via Buy Me a Coffee ($5.00)</span>
+        </a>
+      </div>
+
+      <!-- Activation Passcode Input -->
+      <div style="border-top: 1px solid #374151; padding-top: 0.85rem; text-align: center;">
+        <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.4rem;">Already have an activation passcode?</p>
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="text" id="inpPasscode" placeholder="Enter code (e.g. SOLOFREE52)" style="flex: 1; padding: 0.5rem; border-radius: 8px; border: 1px solid #4b5563; background: #1f2937; color: #fff; text-transform: uppercase; font-size: 0.85rem;">
+          <button id="btnActivatePasscode" style="background: #10b981; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem;">Activate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

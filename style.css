@@ -1,0 +1,582 @@
+/* CrossBorder Solo — Master Stylesheet */
+:root {
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --border-color: #334155;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --accent-gold: #f59e0b;
+  --success: #10b981;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background: #0b1120;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-icon {
+  font-size: 1.6rem;
+}
+
+.brand-title h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.brand-title .badge {
+  font-size: 0.65rem;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-header {
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+}
+
+.btn-sample {
+  background: #1e293b;
+  border: 1px solid var(--border-color);
+  color: #cbd5e1;
+}
+.btn-sample:hover { background: #334155; color: #fff; }
+
+.btn-nudge {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+.btn-nudge:hover { background: rgba(16, 185, 129, 0.25); }
+
+.btn-vip {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000;
+  font-weight: 800;
+  border: none;
+}
+.btn-vip:hover { transform: translateY(-1px); }
+
+.btn-print {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+}
+.btn-print:hover { background: var(--primary-hover); }
+
+/* Main Split-Screen Workspace */
+.workspace {
+  display: flex;
+  height: calc(100vh - 65px);
+  overflow: hidden;
+}
+
+/* Left Panel: Form Editor */
+.editor-panel {
+  flex: 1;
+  min-width: 420px;
+  max-width: 600px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+/* Right Panel: Live PDF Preview */
+.preview-panel {
+  flex: 1.2;
+  background: #090d16;
+  overflow-y: auto;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Form Styles */
+.form-section {
+  background: #131d31;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #60a5fa;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.form-group {
+  margin-bottom: 0.75rem;
+}
+
+label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  background: #0b1120;
+  border: 1px solid var(--border-color);
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Line Items Table in Editor */
+.line-items-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.3fr;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.line-item-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.3fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.btn-remove-item {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.btn-add-item {
+  background: #1e293b;
+  border: 1px dashed #475569;
+  color: #60a5fa;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+.btn-add-item:hover {
+  background: #334155;
+  color: #fff;
+}
+
+/* Compliance Toggle Box */
+.compliance-box {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fde68a;
+  cursor: pointer;
+}
+
+/* A4 Paper Invoice Preview */
+.a4-page {
+  background: #ffffff;
+  color: #0f172a;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  font-size: 10pt;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.inv-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 12mm;
+  margin-bottom: 8mm;
+}
+
+.inv-brand h2 {
+  font-size: 20pt;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+.inv-brand p {
+  font-size: 8.5pt;
+  color: #475569;
+  margin-top: 2px;
+}
+
+.inv-meta {
+  text-align: right;
+}
+
+.inv-meta .inv-title {
+  font-size: 22pt;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #0f172a;
+}
+
+.inv-meta table {
+  margin-left: auto;
+  font-size: 8.5pt;
+  border-collapse: collapse;
+  margin-top: 4px;
+}
+
+.inv-meta table td {
+  padding: 2px 4px;
+}
+
+.inv-meta table td:first-child {
+  font-weight: 600;
+  color: #64748b;
+  text-align: right;
+}
+
+.inv-meta table td:last-child {
+  font-weight: 700;
+  text-align: right;
+}
+
+.inv-addresses {
+  display: flex;
+  justify-content: space-between;
+  gap: 15mm;
+  margin-bottom: 8mm;
+}
+
+.address-block {
+  flex: 1;
+}
+
+.address-block h4 {
+  font-size: 8pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 2px;
+}
+
+.address-block p {
+  font-size: 9pt;
+  line-height: 1.4;
+  color: #1e293b;
+}
+
+/* Invoice Table */
+.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 8mm;
+}
+
+.inv-table th {
+  background: #f1f5f9;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 10px;
+  border-top: 1px solid #cbd5e1;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.inv-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 9pt;
+  color: #1e293b;
+}
+
+.inv-table td.text-right,
+.inv-table th.text-right {
+  text-align: right;
+}
+
+/* Totals Box */
+.inv-totals-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8mm;
+}
+
+.inv-totals {
+  width: 80mm;
+  font-size: 9pt;
+}
+
+.inv-totals .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.inv-totals .row.grand-total {
+  border-top: 2px solid #0f172a;
+  border-bottom: 2px solid #0f172a;
+  font-size: 11pt;
+  font-weight: 800;
+  padding: 8px 0;
+  color: #0f172a;
+  margin-top: 4px;
+}
+
+.dual-currency-note {
+  font-size: 7.5pt;
+  color: #475569;
+  font-style: italic;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* Legal Compliance & Banking Section */
+.inv-footer-details {
+  border-top: 1px solid #cbd5e1;
+  padding-top: 6mm;
+  font-size: 8pt;
+}
+
+.gst-lut-box {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 7.5pt;
+  color: #334155;
+  margin-bottom: 6mm;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.payment-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10mm;
+  margin-bottom: 6mm;
+}
+
+.payment-col h5 {
+  font-size: 8pt;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.payment-col p {
+  font-size: 8pt;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.signoff {
+  text-align: center;
+  font-size: 7.5pt;
+  color: #64748b;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 4mm;
+}
+
+/* Modals */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: #1e293b;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  max-width: 550px;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* PRINT MEDIA QUERIES (Pixel-Perfect A4 Vector PDF Output) */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  header,
+  .editor-panel,
+  .modal-overlay,
+  .header-actions {
+    display: none !important;
+  }
+  .workspace {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .preview-panel {
+    background: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .a4-page {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    min-height: auto !important;
+  }
+  @page {
+    size: A4;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .workspace {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+  .editor-panel {
+    max-width: 100%;
+    min-width: 100%;
+  }
+  .preview-panel {
+    padding: 1rem 0.5rem;
+  }
+  .a4-page {
+    width: 100%;
+    min-height: auto;
+    padding: 1rem;
+    font-size: 8pt;
+  }
+}
